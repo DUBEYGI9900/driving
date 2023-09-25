@@ -12,7 +12,7 @@ class routes {
       case myroutes.home_screen:
         return MaterialPageRoute(builder: (context) => home_screen());
       case myroutes.sign_screen:
-        return MaterialPageRoute(builder: (context) => Sign_Screen());
+        return MaterialPageRoute(builder: (context) => SignScreen());
       case myroutes.splash_screen:
         return MaterialPageRoute(builder: (context) => Splash());
               case myroutes.register:

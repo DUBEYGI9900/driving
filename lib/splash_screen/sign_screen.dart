@@ -1,14 +1,14 @@
-import 'dart:js';
-
+import 'package:driving_app/home_screen.dart';
 import 'package:driving_app/routes/myroutes.dart';
+import 'package:driving_app/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Sign_Screen extends StatefulWidget {
-  const Sign_Screen({super.key});
+class SignScreen extends StatefulWidget {
+  const SignScreen({Key? key}) : super(key: key);
 
   @override
-  State<Sign_Screen> createState() => _SignScreenState();
+  _SignScreenState createState() => _SignScreenState();
 }
 
 final emailController = TextEditingController();
@@ -17,7 +17,7 @@ bool rememberMe = false;
 
 final String apiUrl = 'http://ds.eduapps.in/api/login';
 
-Future<void> signIn(String email, String password) async {
+Future<String> signIn(String email, String password) async {
   final response = await http.post(
     Uri.parse(apiUrl),
     body: {
@@ -28,28 +28,27 @@ Future<void> signIn(String email, String password) async {
 
   if (response.statusCode == 200) {
     print('Sign-in successful');
-    Navigator.pushReplacementNamed(
-        context as BuildContext,
-        myroutes
-            .home_screen); // Replace 'myroutes.home' with your actual home page route name
+    // You can add navigation logic here
   } else {
     print('Sign-in failed');
+  }if (response.statusCode == 200) {
+    return "success";
+  } else {
+    return "error"; // You can replace "error" with an actual error message if needed.
   }
 }
+ 
 
-class _SignScreenState extends State<Sign_Screen> {
-  final _formKey = GlobalKey<FormState>(); // Add a GlobalKey for the form
+class _SignScreenState extends State<SignScreen> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    // final double screenWidth = MediaQuery.of(context).size.width;
-    // final double screenheight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Container(
             width: double.infinity,
             height: 400,
@@ -58,8 +57,7 @@ class _SignScreenState extends State<Sign_Screen> {
               color: Colors.grey.shade300,
             ),
             child: Form(
-              // Wrap your content with a Form widget
-              key: _formKey, // Assign the form key
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -102,7 +100,7 @@ class _SignScreenState extends State<Sign_Screen> {
                         if (!value.contains('@')) {
                           return 'Please enter a valid email';
                         }
-                        return null; // Return null for no validation error
+                        return null;
                       },
                     ),
                   ),
@@ -123,7 +121,7 @@ class _SignScreenState extends State<Sign_Screen> {
                       ),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.visiblePassword,
-                      obscureText: true, // Hide password input
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -131,7 +129,7 @@ class _SignScreenState extends State<Sign_Screen> {
                         if (value.length < 6) {
                           return 'Password must be at least 6 characters';
                         }
-                        return null; // Return null for no validation error
+                        return null;
                       },
                     ),
                   ),
@@ -147,32 +145,39 @@ class _SignScreenState extends State<Sign_Screen> {
                             });
                           },
                         ),
-                        Text('Remember Me'),
+                        const Text('Remember Me'),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
                   Container(
                     width: 290,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Validation passed, proceed with sign-in
-                          final email = emailController.text.trim();
-                          final password = passwordController.text.trim();
-                          signIn(email, password);
-                        }
-                      },
-                      child: const Text("Sign In"),
-                    ),
+                   child: ElevatedButton(
+  onPressed: () {
+    if (_formKey.currentState!.validate()) {
+      final email = emailController.text.trim();
+      final password = passwordController.text.trim();
+      signIn(email, password).then((result) {
+        if (result == "success") {
+          // Navigate to the new screen after successful sign-in
+          Navigator.pushNamed(context,myroutes.home_screen);
+        } else {
+          // Handle sign-in failure here
+        }
+      });
+    }
+  },
+  child: const Text("Sign In"),
+),
+
                   ),
                   Container(
                     width: 290,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, myroutes.register);
+                        // Add navigation logic to navigate to registration screen
                       },
-                      child: const Text("Sign In"),
+                      child: const Text("Register"),
                     ),
                   )
                 ],
@@ -184,3 +189,5 @@ class _SignScreenState extends State<Sign_Screen> {
     );
   }
 }
+
+
