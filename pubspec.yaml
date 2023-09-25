@@ -37,6 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   flutter_calendar_carousel: ^2.4.2
+  image_picker: ^1.0.4
+  image_cropper: ^5.0.0
+  get: ^4.6.6
+  shared_preferences: ^2.2.1
+  fluttertoast: ^8.2.2
 
 
 dev_dependencies:

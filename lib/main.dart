@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
      initialRoute: myroutes.splash_screen,
      onGenerateRoute:routes.generateroute,
     // on routes.generateroute,

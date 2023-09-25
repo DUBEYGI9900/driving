@@ -1,3 +1,6 @@
+import 'dart:js';
+
+import 'package:driving_app/routes/myroutes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,7 +15,7 @@ final emailController = TextEditingController();
 final passwordController = TextEditingController();
 bool rememberMe = false;
 
-final String apiUrl = 'YOUR_API_ENDPOINT';
+final String apiUrl = 'http://ds.eduapps.in/api/login';
 
 Future<void> signIn(String email, String password) async {
   final response = await http.post(
@@ -25,6 +28,10 @@ Future<void> signIn(String email, String password) async {
 
   if (response.statusCode == 200) {
     print('Sign-in successful');
+    Navigator.pushReplacementNamed(
+        context as BuildContext,
+        myroutes
+            .home_screen); // Replace 'myroutes.home' with your actual home page route name
   } else {
     print('Sign-in failed');
   }
@@ -35,27 +42,26 @@ class _SignScreenState extends State<Sign_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenheight = MediaQuery.of(context).size.height;
+    // final double screenWidth = MediaQuery.of(context).size.width;
+    // final double screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-            resizeToAvoidBottomInset: true,
-
+      resizeToAvoidBottomInset: true,
       body: Center(
-        child: Padding(padding: EdgeInsets.all(10),
-          
+        child: Padding(
+          padding: EdgeInsets.all(10),
           child: Container(
-      width: double.infinity,
-      height: 400,
-              decoration: BoxDecoration(
+            width: double.infinity,
+            height: 400,
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.grey.shade300,
             ),
-            child: Form( // Wrap your content with a Form widget
+            child: Form(
+              // Wrap your content with a Form widget
               key: _formKey, // Assign the form key
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center
-                ,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Divider(
                     height: 0,
@@ -160,7 +166,15 @@ class _SignScreenState extends State<Sign_Screen> {
                       child: const Text("Sign In"),
                     ),
                   ),
-                 
+                  Container(
+                    width: 290,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, myroutes.register);
+                      },
+                      child: const Text("Sign In"),
+                    ),
+                  )
                 ],
               ),
             ),
